@@ -1,7 +1,7 @@
 defmodule CloudWatch.InputLogEvent do
   @enforce_keys  [:message, :timestamp]
 
-  defimpl Poison.Encoder do
+  defimpl Jason.Encoder do
     @epoch :calendar.datetime_to_gregorian_seconds({{1970, 1, 1}, {0, 0, 0}})
 
     def encode(%{message: message, timestamp: timestamp}, options) do
@@ -11,7 +11,7 @@ defmodule CloudWatch.InputLogEvent do
       |> Kernel.*(1000)
       |> Kernel.+(milliseconds)
       %{message: message, timestamp: timestamp}
-      |> Poison.Encoder.encode(options)
+      |> Jason.Encoder.encode(options)
       |> IO.chardata_to_string
     end
   end
